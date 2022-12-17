@@ -1,8 +1,9 @@
 from flask import render_template, redirect, url_for, flash
 from applications import app
 from applications.models import User
-from applications.forms import Register_Form
+from applications.forms import Register_Form, Login_Form
 from applications import db
+from flask_login import login_user
 
 @app.route("/")
 @app.route("/home")
@@ -18,9 +19,26 @@ def register_page():
                               password = form.password1.data)
         db.session.add(user_to_create)
         db.session.commit()
+        
         flash(f'Account created successfully! You are now logged in as: {user_to_create.username}', category="success")
-        return redirect(url_for("home_page"))
+        return redirect(url_for("login_page"))
     if form.errors != {}:
-        for err_msg in form.errors.values():
+        for err_msg in form.errors.values(): 
             flash(f'There was an error with creating a user: {err_msg}', category='danger')
     return render_template("register.html", form=form)
+
+@app.route("/login", methods=["GET", "POST"])
+def login_page():
+    form = Login_Form()
+    if form.validate_on_submit():
+        attempted_user = User.query.filter_by(email_adress = form.email_adress.data).first()
+        print("attempted user",attempted_user)
+        if attempted_user and attempted_user.check_password(
+                attempted_password = form.password.data
+        ):
+            login_user(attempted_user)
+            flash(f'Success! You are logged in as: {attempted_user.email_adress}', category="success")
+            return redirect(url_for("home_page"))
+        else:
+            flash("email and password are not match! Please try again", category="danger")
+    return render_template("login.html", form=form)
