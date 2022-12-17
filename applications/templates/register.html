@@ -1,0 +1,32 @@
+{% extends "base.html" %} {% block title %} Register Page {% endblock %} {%
+block content %}
+
+<form method="POST" class="row g-3 container mt-5 form-box">
+  {{ form.hidden_tag() }}
+  <div class="col-md-6">
+    <label for="inputEmail4" class="form-label">
+      {{ form.username.label() }}</label
+    >
+    {{ form.username(class="form-control", placeholder="User Name") }}
+  </div>
+  <div class="col-md-6">
+    <label for="inputEmail4" class="form-label">
+      {{ form.email_adress.label() }}</label
+    >
+    {{ form.email_adress(class="form-control", placeholder="Email") }}
+  </div>
+  <div class="col-md-6">
+    <label for="inputPassword4" class="form-label">
+      {{ form.password1.label() }}</label
+    >
+    {{ form.password1(class="form-control", placeholder="Password") }}
+  </div>
+  <div class="col-md-6">
+    <label for="inputPassword4" class="form-label">
+      {{ form.password2.label() }}</label
+    >
+    {{ form.password2(class="form-control", placeholder="Confirm Password") }}
+  </div>
+  <div class="col-12">{{form.submit(class="btn btn-dark")}}</div>
+</form>
+{% endblock %}

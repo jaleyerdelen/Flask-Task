@@ -1,2 +1,4 @@
 Env
 __pycache__
+.env
+instance
