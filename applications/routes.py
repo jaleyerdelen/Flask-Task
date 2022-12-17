@@ -3,10 +3,11 @@ from applications import app
 from applications.models import User
 from applications.forms import Register_Form, Login_Form
 from applications import db
-from flask_login import login_user
+from flask_login import login_user, logout_user, login_required
 
 @app.route("/")
 @app.route("/home")
+@login_required
 def home_page():
     return render_template("home.html")
 
@@ -42,3 +43,18 @@ def login_page():
         else:
             flash("email and password are not match! Please try again", category="danger")
     return render_template("login.html", form=form)
+
+@app.route("/discoverphotos")
+def discover_photos():
+    return render_template("includes/discover_photos.html")
+
+@app.route("/userphotos")
+def user_photos():
+    return render_template("includes/user_photos.html")
+    
+@app.route("/logout")
+def logout_page():
+    print("logout")
+    logout_user()
+    flash("You have been logged out", category="info")
+    return redirect(url_for("home_page"))

@@ -1,4 +1,45 @@
-{% extends "base.html" %}
-{% block title %}
-  Home Page
+{% extends "base.html" %} 
+{% block title %} Home Page {% endblock %} 
+{% block content %} 
+{% if current_user.is_authenticated %}
+<div class="card-box mt-5">
+  <div class="card" style="width: 18rem">
+    <img
+      src="{{url_for ('static', filename='images/photo_1.jpg') }}"
+      class="card-img-top"
+      alt="..."
+    />
+    <div class="card-body">
+      <h5 class="card-title">Card title</h5>
+      <p class="card-text">
+        Some quick example text to build on the card title and make up the bulk
+        of the card's content.
+      </p>
+      <a href="#" class="btn btn-primary">User Photos</a>
+    </div>
+  </div>
+
+  <div class="card" style="width: 18rem">
+    <img
+      src="{{url_for ('static', filename='images/photo_1.jpg') }}"
+      class="card-img-top"
+      alt="..."
+    />
+    <div class="card-body">
+      <h5 class="card-title">Card title</h5>
+      <p class="card-text">
+        Some quick example text to build on the card title and make up the bulk
+        of the card's content.
+      </p>
+      <a href="#" class="btn btn-primary">Discover Photos</a>
+    </div>
+  </div>
+</div>
+{% else %}
+<div>
+  <a href="{{ url_for('login_page') }}" type="button" class="btn btn-dark mt-5"
+    >Please Go To Login Page</a
+  >
+</div>
+{% endif %} 
 {% endblock %}

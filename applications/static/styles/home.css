@@ -7,3 +7,7 @@
 .username-label {
     margin-right: 15px;
 }
+.card-box {
+    display: flex;
+    justify-content: space-evenly;
+}
