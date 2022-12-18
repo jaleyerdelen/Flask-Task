@@ -3,7 +3,7 @@ from applications import app
 from applications.models import User, Photo
 from applications.forms import Register_Form, Login_Form
 from applications import db
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, current_user
 
 from flask import send_from_directory
 from werkzeug.utils import secure_filename
@@ -67,12 +67,13 @@ def uploaded_file(filename):
 
 @app.route("/upload", methods=["GET", "POST"])
 def upload_page():
-    # if request.method == "POST":
      if request.method == 'POST':
         # check if the post request has the file part
         if 'file' not in request.files:
             flash('No file part')
         file = request.files['file']
+        desc = request.form.get("desc")
+        
         # if user does not select file, browser also
         # submit an empty part without filename
         if file.filename == '':
@@ -80,7 +81,7 @@ def upload_page():
         if file:
             filename = secure_filename(file.filename)
             file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            upload = Photo(filename =filename, file_src = "/uploads/" +filename)
+            upload = Photo(filename =filename, file_src = "/uploads/" +filename, description = desc, user_id=current_user.id)
             db.session.add(upload)
             db.session.commit()
             return redirect(url_for('discover_photos'))
@@ -100,7 +101,16 @@ def delete(id):
     db.session.delete(image)
     db.session.commit()
     return redirect(url_for("discover_photos"))
-    
+
+@app.route("/photo/<id>", methods=["GET", "POST"])
+@login_required
+def get_image(id):
+    image = Photo.query.get_or_404(id)
+    if request.method == "POST":
+        if image:
+            image.description = request.form.get("desc")
+            db.session.commit()
+    return render_template("includes/photo_detail.html", photos=[image])
 
 @app.route("/userphotos")
 def user_photos():

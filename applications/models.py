@@ -11,6 +11,7 @@ class User(db.Model, UserMixin):
     username = db.Column(db.String(length=30), nullable=False, unique=True)
     email_adress = db.Column(db.String(length=50), nullable=False, unique=True)
     password_hash = db.Column(db.String(length=60), nullable=False)
+    photos = db.relationship("Photo", backref="user")
 
     def __repr__(self):
         return f"Item {self.username}"
@@ -31,4 +32,6 @@ class Photo(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     filename = db.Column(db.String(50))
     file_src = db.Column(db.String(250))
+    description = db.Column(db.String(250))
+    user_id = db.Column(db.Integer, db.ForeignKey("user.id"))
 

@@ -9,11 +9,15 @@
   <img src="{{url_for ('static', filename=photo.file_src) }}" class="card-img-top" alt="...">
   <div class="card-body">
     <h5 class="card-title">Card title</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+    <p class="card-text">{{ photo.description }}</p>
+{% if current_user.is_authenticated %}
     <a href="delete/{{photo.id}}" id="{{photo.id}}" class="btn btn-danger">Delete</a>
+    <a name="filename" href="photo/{{photo.id}}" id="filename" type="button" class="btn btn-warning">Detail</a>
+{% endif %}
   </div>
 </div>
 </div>
+
 {% endfor %}
 </div>
 {% endblock %}
