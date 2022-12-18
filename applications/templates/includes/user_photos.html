@@ -1,12 +1,26 @@
 {% extends "base.html" %}
-{% block title %} User Photos {% endblock %} 
+{% block title %} Discover Photos Page {% endblock %} 
 {% block content %}
+
+<div class="row mt-5 photo-card">
+{% for photo in photos %}
+<div class="col-sm-3">
 <div class="card" style="width: 18rem;">
-  <img src="..." class="card-img-top" alt="...">
+  <img src="{{url_for ('static', filename=photo.file_src) }}" class="card-img-top" alt="...">
   <div class="card-body">
     <h5 class="card-title">Card title</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
+    <p class="card-text">{{ photo.description }}</p>
+{% if current_user.is_authenticated %}
+    <a href="delete/{{photo.id}}" id="{{photo.id}}" class="btn btn-danger">Delete</a>
+    <a name="filename" href="photo/{{photo.id}}" id="filename" type="button" class="btn btn-warning">Detail</a>
+{% endif %}
   </div>
 </div>
+</div>
+
+{% endfor %}
+</div>
 {% endblock %}
+
+
+

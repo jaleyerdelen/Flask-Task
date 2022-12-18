@@ -114,7 +114,9 @@ def get_image(id):
 
 @app.route("/userphotos")
 def user_photos():
-    return render_template("includes/user_photos.html")
+    user_id = current_user.id
+    images = Photo.query.filter_by(user_id=user_id)
+    return render_template("includes/user_photos.html", photos = images)
 
 @app.route("/discoverphotos")
 def discover_photos():

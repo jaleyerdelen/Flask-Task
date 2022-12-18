@@ -38,11 +38,17 @@
             <a class="nav-link active" aria-current="page" href="{{url_for ('home_page')}}">Home</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link active" href="{{url_for ('upload_page')}}">Upload</a>
-          </li>
-          <li class="nav-item">
             <a class="nav-link active" href="{{url_for ('discover_photos')}}">Discover Photos</a>
           </li>
+
+{% if current_user.is_authenticated %}
+            <li class="nav-item">
+            <a class="nav-link active" href="{{url_for ('user_photos')}}">User Photos</a>
+          </li>          
+          <li class="nav-item">
+            <a class="nav-link active" href="{{url_for ('upload_page')}}">Upload</a>
+          </li>
+{% endif %}
         </ul>
       </div>
 {% if current_user.is_authenticated %}

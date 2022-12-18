@@ -10,7 +10,7 @@
   <div class="card-body">
     <h5 class="card-title">Card title</h5>
     <p class="card-text">{{ photo.description }}</p>
-{% if current_user.is_authenticated %}
+{% if current_user.is_authenticated and current_user.id == photo.user_id %}
     <a href="delete/{{photo.id}}" id="{{photo.id}}" class="btn btn-danger">Delete</a>
     <a name="filename" href="photo/{{photo.id}}" id="filename" type="button" class="btn btn-warning">Detail</a>
 {% endif %}
