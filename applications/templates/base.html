@@ -52,7 +52,10 @@
         </ul>
       </div>
 {% if current_user.is_authenticated %}
-  <a href="{{ url_for('logout_page') }}" type="button" class="btn btn-light">Logout</a>
+  <a href="{{ url_for('logout_page') }}" type="button" class="btn btn-light register-btn">Logout</a>
+{% if current_user.role == "admin" %}
+  <a href="{{ url_for('admin_users') }}" type="button" class="btn btn-light">Admin</a>
+{% endif %}
 {% endif %}
 {% if not current_user.is_authenticated %}
       <a href="{{ url_for('register_page') }}" type="button" class="btn btn-light register-btn">Register</a>

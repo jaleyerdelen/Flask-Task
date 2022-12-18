@@ -124,4 +124,12 @@ def discover_photos():
     # print(images)
     return render_template("includes/discover_photos.html", photos=images)
 
+@app.route("/admin/users")
+def admin_users():
+    users = User.query.all()
+    return render_template("includes/admin_users.html", users=users)
 
+@app.route("/admin/users/<id>/photos")
+def admin_users_photos(id):
+    images = Photo.query.filter_by(user_id=id)
+    return render_template("includes/user_photos.html", photos = images)

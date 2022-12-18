@@ -12,6 +12,7 @@ class User(db.Model, UserMixin):
     email_adress = db.Column(db.String(length=50), nullable=False, unique=True)
     password_hash = db.Column(db.String(length=60), nullable=False)
     photos = db.relationship("Photo", backref="user")
+    role = db.Column(db.String(length=50), default="user")
 
     def __repr__(self):
         return f"Item {self.username}"

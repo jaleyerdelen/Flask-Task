@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %} Admin User Page {% endblock %} 
+{% block content %}
+
+{% if current_user.is_authenticated and current_user.role == "admin" %}
+   <div class="row mt-5 photo-card">
+{% for user in users %}
+<div class="col-sm-3">
+<div class="card" style="width: 18rem;">
+  <div class="card-body">
+    <h5 class="card-title">{{user.username}}</h5> 
+    <a href="/admin/users/{{user.id}}/photos" type="button" class="btn btn-primary">Users Photo</a>
+</div>
+</div>
+</div>
+{% endfor %}
+{% endif %}
+</div>
+{% endblock %}
+
+
+
