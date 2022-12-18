@@ -1,9 +1,12 @@
-from flask import render_template, redirect, url_for, flash
+from flask import render_template, redirect, url_for, flash, request
 from applications import app
-from applications.models import User
+from applications.models import User, Photo
 from applications.forms import Register_Form, Login_Form
 from applications import db
 from flask_login import login_user, logout_user, login_required
+
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
 
 @app.route("/")
 @app.route("/home")
@@ -44,6 +47,26 @@ def login_page():
             flash("email and password are not match! Please try again", category="danger")
     return render_template("login.html", form=form)
 
+@app.route("/logout")
+def logout_page():
+    print("logout")
+    logout_user()
+    flash("You have been logged out", category="info")
+    return redirect(url_for("home_page"))
+
+@app.route("/upload", methods=["GET", "POST"])
+def upload_page():
+    if request.method == "POST":
+        file = request.files["file"]
+        print(file)
+        upload = Photo(filename = file.filename, data = file.read())
+        print(upload)
+        db.session.add(upload)
+        db.session.commit()
+        return f"Uploaded: {file.filename}"
+    return render_template("includes/upload.html")
+
+
 @app.route("/discoverphotos")
 def discover_photos():
     return render_template("includes/discover_photos.html")
@@ -51,10 +74,3 @@ def discover_photos():
 @app.route("/userphotos")
 def user_photos():
     return render_template("includes/user_photos.html")
-    
-@app.route("/logout")
-def logout_page():
-    print("logout")
-    logout_user()
-    flash("You have been logged out", category="info")
-    return redirect(url_for("home_page"))

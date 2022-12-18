@@ -10,6 +10,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///applications.db"
+
 secret_key = os.getenv("SECRET_KEY")
 bcrypt = Bcrypt(app)
 db = SQLAlchemy(app)

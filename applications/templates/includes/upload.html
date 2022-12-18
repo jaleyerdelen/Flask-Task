@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %} Upload Page {% endblock %} 
+{% block content %}
+<form method="POST" actions="http://127.0.0.1:5000/upload" enctype="multipart/form-data" class="row g-3 container mt-5">
+<div class="input-group container mt-5">
+  <input type="file" name="file" multiple="true" autocomplete="off" required class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+  <button class="btn btn-outline-secondary" value="submit" type="submit" id="inputGroupFileAddon04">Upload</button>
+</div>
+</form>
+{% endblock %}

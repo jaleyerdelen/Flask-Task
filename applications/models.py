@@ -28,6 +28,7 @@ class User(db.Model, UserMixin):
     def check_password(self, attempted_password):
         return bcrypt.check_password_hash(self.password_hash, attempted_password)
 class Photo(db.Model):
-    id = db.Column(db.Integer(), primary_key=True)
-    img = db.Column(db.Text(), unique=True, nullable=False)
-    name = db.Column(db.Text(), nullable=False)
+    id = db.Column(db.Integer, primary_key=True)
+    filename = db.Column(db.String(50))
+    data = db.Column(db.LargeBinary)
+
