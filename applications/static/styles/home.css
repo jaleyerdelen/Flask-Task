@@ -14,3 +14,10 @@
 .photo-card {
     margin-left: 20px;
 }
+
+.form-input {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 50%;
+}
