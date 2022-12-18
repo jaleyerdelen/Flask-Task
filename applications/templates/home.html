@@ -5,7 +5,7 @@
 <div class="card-box mt-5">
   <div class="card" style="width: 18rem">
     <img
-      src="{{url_for ('static', filename='images/photo_1.jpg') }}"
+      src="{{url_for ('static', filename='images/images_3.jfif') }}"
       class="card-img-top"
       alt="..."
     />
@@ -21,7 +21,7 @@
 
   <div class="card" style="width: 18rem">
     <img
-      src="{{url_for ('static', filename='images/photo_1.jpg') }}"
+      src="{{url_for ('static', filename='images/images.jfif') }}"
       class="card-img-top"
       alt="..."
     />
@@ -31,7 +31,7 @@
         Some quick example text to build on the card title and make up the bulk
         of the card's content.
       </p>
-      <a href="#" class="btn btn-primary">Discover Photos</a>
+      <a href="{{url_for('discover_photos')}}" class="btn btn-primary">Discover Photos</a>
     </div>
   </div>
 </div>

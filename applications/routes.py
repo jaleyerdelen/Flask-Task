@@ -1,12 +1,16 @@
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, current_app
 from applications import app
 from applications.models import User, Photo
 from applications.forms import Register_Form, Login_Form
 from applications import db
 from flask_login import login_user, logout_user, login_required
 
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+from flask import send_from_directory
+from werkzeug.utils import secure_filename
 
+import os
+
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 @app.route("/")
 @app.route("/home")
@@ -54,23 +58,58 @@ def logout_page():
     flash("You have been logged out", category="info")
     return redirect(url_for("home_page"))
 
+
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    print(filename)
+    return send_from_directory(app.config['UPLOAD_FOLDER'],
+                               filename)
+
 @app.route("/upload", methods=["GET", "POST"])
 def upload_page():
-    if request.method == "POST":
-        file = request.files["file"]
-        print(file)
-        upload = Photo(filename = file.filename, data = file.read())
-        print(upload)
-        db.session.add(upload)
-        db.session.commit()
-        return f"Uploaded: {file.filename}"
-    return render_template("includes/upload.html")
+    # if request.method == "POST":
+     if request.method == 'POST':
+        # check if the post request has the file part
+        if 'file' not in request.files:
+            flash('No file part')
+        file = request.files['file']
+        # if user does not select file, browser also
+        # submit an empty part without filename
+        if file.filename == '':
+            flash('No selected file')
+        if file:
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+            upload = Photo(filename =filename, file_src = "/uploads/" +filename)
+            db.session.add(upload)
+            db.session.commit()
+            return redirect(url_for('discover_photos'))
+     return render_template("includes/upload.html")
 
-
-@app.route("/discoverphotos")
-def discover_photos():
-    return render_template("includes/discover_photos.html")
+@app.route("/delete/<id>")
+@login_required
+def delete(id):
+    #delete db image
+    image = Photo.query.get_or_404(id)
+    print(id)
+    print(image)
+    db.session.delete(image)
+    db.session.commit()
+    #delete uploads folder
+    os.unlink(os.path.join(current_app.root_path, 'static/uploads/' + image.filename))
+    db.session.delete(image)
+    db.session.commit()
+    return redirect(url_for("discover_photos"))
+    
 
 @app.route("/userphotos")
 def user_photos():
     return render_template("includes/user_photos.html")
+
+@app.route("/discoverphotos")
+def discover_photos():
+    images = Photo.query.all()
+    # print(images)
+    return render_template("includes/discover_photos.html", photos=images)
+
+

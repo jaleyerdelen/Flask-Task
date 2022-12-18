@@ -3,6 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 
+UPLOAD_FOLDER = 'applications/static/uploads/'
+
 app = Flask(__name__)
 
 import os
@@ -10,6 +12,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///applications.db"
+
+app.config["UPLOAD_FOLDER"] = UPLOAD_FOLDER
 
 secret_key = os.getenv("SECRET_KEY")
 bcrypt = Bcrypt(app)
