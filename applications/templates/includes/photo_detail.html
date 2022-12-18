@@ -1,18 +1,17 @@
 {% extends "base.html" %}
-{% block title %} Update Photos Page {% endblock %} 
+{% block title %} Photo Detail Page {% endblock %} 
 {% block content %}
 
-<div class="row mt-5 photo-card">
+<div class="row mt-5 photo-card photo-content">
 {% for photo in photos %}
 <div class="col-sm-3">
 <div class="card" style="width: 18rem;">
   <img src="{{url_for ('static', filename=photo.file_src) }}" class="card-img-top" alt="...">
   <div class="card-body">
-    <h5 class="card-title">Card title</h5>
     <form method="POST" class="form-control">
     <input value="{{photo.description}}" name="desc" class="card-text">
-    <a href="delete/{{photo.id}}" id="{{photo.id}}" class="btn btn-danger">Delete</a>
-    <button type="submit" class="btn btn-warning">Update</button>
+    <a href="delete/{{photo.id}}" id="{{photo.id}}" class="btn btn-danger mt-3">Delete</a>
+    <button type="submit" class="btn btn-warning mt-3">Update</button>
     </form>
   </div>
 </div>

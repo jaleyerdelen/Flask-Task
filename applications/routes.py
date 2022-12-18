@@ -40,7 +40,6 @@ def login_page():
     form = Login_Form()
     if form.validate_on_submit():
         attempted_user = User.query.filter_by(email_adress = form.email_adress.data).first()
-        print("attempted user",attempted_user)
         if attempted_user and attempted_user.check_password(
                 attempted_password = form.password.data
         ):
@@ -53,7 +52,6 @@ def login_page():
 
 @app.route("/logout")
 def logout_page():
-    print("logout")
     logout_user()
     flash("You have been logged out", category="info")
     return redirect(url_for("home_page"))
@@ -61,7 +59,6 @@ def logout_page():
 
 @app.route('/uploads/<filename>')
 def uploaded_file(filename):
-    print(filename)
     return send_from_directory(app.config['UPLOAD_FOLDER'],
                                filename)
 
@@ -92,8 +89,6 @@ def upload_page():
 def delete(id):
     #delete db image
     image = Photo.query.get_or_404(id)
-    print(id)
-    print(image)
     db.session.delete(image)
     db.session.commit()
     #delete uploads folder
@@ -110,6 +105,7 @@ def get_image(id):
         if image:
             image.description = request.form.get("desc")
             db.session.commit()
+            return redirect(url_for('user_photos'))
     return render_template("includes/photo_detail.html", photos=[image])
 
 @app.route("/userphotos")
@@ -121,7 +117,6 @@ def user_photos():
 @app.route("/discoverphotos")
 def discover_photos():
     images = Photo.query.all()
-    # print(images)
     return render_template("includes/discover_photos.html", photos=images)
 
 @app.route("/admin/users")
